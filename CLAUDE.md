@@ -1,4 +1,10 @@
-# User-Level Claude Instructions
+@RTK.md
+
+## RTK full-signal recovery
+
+If an RTK-compressed command output looks truncated or insufficient to diagnose a failure, read the matching raw log under `~/.local/share/rtk/tee/` (newest file) to recover the full unfiltered signal before concluding.
+
+---
 
 ## Git Safety Rules — MANDATORY
 
@@ -25,12 +31,6 @@ Before running, say something like:
 > "This will **delete the remote branch `feature/foo`** from `origin`. This cannot be undone easily. Proceed?"
 
 Only proceed after the user explicitly says yes (e.g., "yes", "proceed", "go ahead", "ok").
-
----
-
-## Navigation
-
-`cd` into subdirectories of `~/StudioCodeProjects/` is permitted and expected for multi-repo workspace tasks.
 
 ---
 
