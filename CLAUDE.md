@@ -177,9 +177,34 @@ plans directly.
 `setup.cfg`, `requirements*.txt`, or a majority of `.py` files in the
 affected area. When in doubt, ask.
 
-Pass the full approved Development Plan verbatim. After handback,
-present it (Summary, Changes, Verification, Plan deviations, Adjacent
-issues) and wait for user review before proceeding.
+**Task sizing — preventing stream-idle-timeout**: A single `python-pro`
+call that touches more than 4 files or contains more than 3 distinct
+logical changes (new feature, edit existing module, write tests) risks
+an idle stream-close mid-run. Before invoking, count the affected files
+listed in the Development Plan's Implementation Plan section:
+
+- **≤ 4 files, 1–2 logical changes** — single call, pass the full
+  Development Plan verbatim.
+- **5–8 files or 3 logical changes** — split into 2 sequential calls.
+  Call 1 covers production code changes. Call 2 covers tests and any
+  remaining files. Pass the Development Plan plus a handoff note stating
+  what Call 1 completed.
+- **9+ files or 4+ logical changes** — split into 3 sequential calls:
+  Call 1: core domain / orchestration changes.
+  Call 2: adapters, aggregators, and supporting modules.
+  Call 3: tests and fixture files.
+  Each call receives the Development Plan plus a running handoff summary
+  of what prior calls completed and what files were written.
+
+Wait for each call to hand back cleanly before starting the next. If a
+call times out mid-run, resume by passing the same Development Plan with
+a handoff note listing the files already written (recoverable from the
+partial handback output).
+
+Pass the full approved Development Plan verbatim. After all calls
+complete, present the consolidated handback (Summary, Changes,
+Verification, Plan deviations, Adjacent issues) and wait for user review
+before proceeding.
 
 ### QA Routing (post-implementation)
 
