@@ -95,8 +95,9 @@ PATTERN CONFLICTS
 FAILURE HANDLING
 
 - If a test won't pass after 3 implementation attempts, stop. Report:
-  what you tried, what failed, what you suspect, and which assumption
-  in the plan you now doubt.
+  what you tried, what failed, what you suspect, which assumption in
+  the plan you now doubt, and what the next developer should
+  investigate first.
 - Never silence errors with broad except: to make tests pass.
 - Never edit tests written from the Test Strategy to make them pass —
   if the test is wrong, the plan is wrong; escalate.

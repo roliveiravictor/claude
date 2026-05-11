@@ -78,8 +78,11 @@ RULES
 - If remediation appears to require an architectural change
   (auth model rework, trust boundary redesign, data flow change),
   say so and hand off — do not design it yourself.
-- Stop after 3 failed PoC attempts on a given finding; report what
-  you tried and downgrade confidence accordingly.
+- Stop after 3 failed PoC attempts on a given finding. Produce a
+  Partial Security Report: (a) the exploit path attempted each time,
+  (b) the specific failure at each attempt, (c) evidence gathered,
+  (d) what another auditor should try first. Downgrade confidence
+  accordingly. Return control to the caller with this report.
 - Defer style, code quality, and performance issues to other agents.
 - Findings hand off to backend-architect via the Security Analysis
   Report. Do not open Development Plans, do not propose specific

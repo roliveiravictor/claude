@@ -73,6 +73,12 @@ New feature / change (no known bug, perf issue, or security concern):
       → test-automator (QA) → user review
         → api-documenter (docs) → user review
 
+Frontend feature / UI change (component, routing, state, styling, accessibility):
+  frontend-architect (plan) → user approval
+    → implementer → user review
+      → test-automator (QA) → user review
+        → api-documenter (docs, only if public API surface changed) → user review
+
 Documentation only (no code change):
   api-documenter (docs) → user review
 ```
@@ -89,8 +95,9 @@ Invoke `debugger` when the request is:
 Pass it the full error output, stack trace, or failing test output.
 After `debugger` hands back, present the RCA to the user and wait for
 explicit instruction before proceeding to `backend-architect`.
-If `debugger` stops early (3 failed repros), surface its partial report
-and ask the user how to proceed.
+If `debugger` stops early (3 failed repros), surface its Partial Report
+(attempts made, evidence collected, next steps suggested) and ask the
+user how to proceed.
 
 Skip `debugger` and go straight to `backend-architect` when:
 - The root cause is already known and stated by the user
@@ -111,8 +118,9 @@ budget) before invoking — if unavailable, the agent will document
 After `performance-engineer` hands back, present the Performance Analysis
 Report to the user and wait for explicit instruction before proceeding to
 `backend-architect`.
-If the agent stops early (3 failed measurements), surface its partial
-report and ask the user how to proceed.
+If the agent stops early (3 failed measurements), surface its Partial
+Report (attempts made, evidence collected, next steps suggested) and
+ask the user how to proceed.
 
 Skip `performance-engineer` and go straight to `backend-architect` when:
 - The bottleneck is already quantified and the user just wants the fix designed
@@ -154,9 +162,17 @@ Skip `security-auditor` and go straight to `backend-architect` when:
 
 ### Planning Phase
 
-In Plan Mode, always delegate to `backend-architect`. Do not produce
-plans directly.
+In Plan Mode, delegate to the appropriate architect agent. Do not
+produce plans directly.
 
+- Backend, API, data pipeline, CLI, and general feature work:
+  delegate to `backend-architect`.
+- Frontend / UI work (component design, routing, state, styling,
+  accessibility): delegate to `frontend-architect`.
+- Full-stack changes (UI + API in one feature): plan frontend first
+  with `frontend-architect` (more constrained), then pass the approved
+  frontend plan as context to `backend-architect` for the API and data
+  layer. Both plans must be user-approved before implementation begins.
 - Pass the user's requirement plus any upstream analysis reports
   (debugger RCA, performance-engineer Performance Analysis Report,
   security-auditor Security Analysis Report) and relevant context
@@ -168,14 +184,21 @@ plans directly.
 
 ### Implementation Routing (post-plan approval)
 
-| Project language | Implementation agent |
-|-----------------|---------------------|
-| Python (any framework) | `python-pro` |
-| Other / mixed | Implement directly |
+| Project type / language          | Implementation agent |
+|----------------------------------|---------------------|
+| Python (any framework)           | `python-pro`        |
+| Frontend / UI (any JS framework) | Implement directly (no dedicated frontend-implementer yet) |
+| Other / mixed                    | Implement directly  |
 
 **Detecting a Python project**: check for `pyproject.toml`, `setup.py`,
 `setup.cfg`, `requirements*.txt`, or a majority of `.py` files in the
 affected area. When in doubt, ask.
+
+**Detecting a frontend project**: check for `package.json` with react,
+vue, angular, svelte, next, nuxt, or remix as a dep or devDep, or for
+`src/components/`, `pages/`, or `app/` with route files. For a monorepo
+with Python backend + React frontend: route the frontend plan to direct
+implementation and the backend plan to `python-pro`.
 
 **Task sizing — preventing stream-idle-timeout**: A single `python-pro`
 call that touches more than 4 files or contains more than 3 distinct

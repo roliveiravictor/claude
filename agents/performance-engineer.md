@@ -69,8 +69,11 @@ RULES
   that worsens P99 is a regression.
 - If the bottleneck appears to require an architectural change to
   fix, say so and hand off — do not design it yourself.
-- Stop after 3 failed measurement attempts; report what you tried
-  and what is still unknown.
+- Stop after 3 failed measurement attempts. Produce a Partial
+  Performance Report: (a) the measurement method attempted each time,
+  (b) why it failed to produce stable data, (c) any unstable
+  measurements collected, (d) what the next investigator should
+  instrument first. Return control to the caller with this report.
 - Do not paste secrets, credentials, tokens, or PII into reports.
 
 HANDBACK FORMAT

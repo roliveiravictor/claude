@@ -51,8 +51,11 @@ RULES
   concurrency hazards.
 - If the bug appears to require a new abstraction or architectural
   change to fix, say so and hand off — do not design it yourself.
-- Stop after 3 failed reproduction attempts; report what you tried
-  and what is still unknown.
+- Stop after 3 failed reproduction attempts. Produce a Partial RCA:
+  (a) what was attempted in each repro try, (b) observed behavior vs
+  expected each time, (c) evidence collected (logs, stack traces,
+  state snapshots), (d) the next hypothesis an investigator should
+  pursue first. Return control to the caller with this report.
 
 HANDBACK FORMAT
 ## Summary
