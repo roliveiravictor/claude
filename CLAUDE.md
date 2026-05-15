@@ -182,6 +182,52 @@ produce plans directly.
 - Treat the approved plan's Specification as authoritative during
   implementation; Implementation Plan as guidance.
 
+### Plan Quality Standards
+
+Plans vary in scope and complexity. The standard is not a fixed checklist — it is **judgment**: for each quality element below, the plan author reasons about whether the task warrants it. If it does, it must be present at the required depth. If it doesn't, the plan explicitly says why it's not applicable. A shallow section for a warranted element is a plan defect.
+
+Before presenting any plan for user approval, verify each applicable element is present at the required depth. If not, return to the source with specific instructions on what to add.
+
+#### Affected files — function/method level
+- **Applies when**: the plan touches existing code (almost always).
+- **Required depth**: each file entry names the specific functions, classes, or methods that change — not just the file. "Update `EventHandler`" is insufficient; name which method and what changes.
+- **Not required**: config-only or infra-only changes where no function is modified.
+
+#### Interface contracts — typed signatures
+- **Applies when**: the plan introduces or changes a public function, method, API endpoint, or shared module boundary.
+- **Required depth**: full typed signature — name, parameter names with types, return type, exceptions raised. For endpoints: method, path, request/response shape, auth requirement.
+- **Not required**: internal private helpers with no external callers; trivial renames with identical signatures.
+
+#### Existing code to reuse
+- **Applies when**: the plan recommends using an existing utility, base class, helper, component, or pattern.
+- **Required depth**: cite the specific location as `path/to/file:line_number`. "Use the existing helper" without a citation is a gap.
+- **Not required**: greenfield additions where no applicable existing code exists (state this explicitly).
+
+#### Data / render flow
+- **Applies when**: the change involves non-trivial logic — more than a single CRUD operation, a multi-step transformation, async coordination across services, or a complex render sequence.
+- **Required depth**: a numbered step-by-step trace of how data or state moves through the change (input → processing → output). Pseudocode is welcome.
+- **Not required**: simple CRUD endpoints, single-purpose utilities, or pure config changes.
+
+#### Edge cases and error scenarios
+- **Applies when**: the change handles external input, calls external services, manages state transitions, or has meaningful failure modes.
+- **Required depth**: enumerated conditions, each with the specific trigger and the expected system/user-visible behaviour. Minimum 3 for features handling user input or external service calls.
+- **Not required**: internal refactors with no changed behaviour, pure documentation changes.
+
+#### Verification
+- **Applies when**: always — every plan has something to verify.
+- **Required depth**: at least one concrete, runnable check per logical change. "Run the tests" is insufficient; name the test file, command, or observable behaviour. For API changes: sample request/response. For UI: describe what the user sees.
+- **Scales with scope**: a one-line rename needs one verification step; a new feature needs a sequence covering the happy path and at least one failure path.
+
+#### Language that signals a shallow plan
+
+Flag and return any plan containing the following without the required specifics:
+- "Update the service / module / handler" → must name the exact function and what changes
+- "Add a helper / utility" → must name it, show its signature, and give its location
+- "Handle errors appropriately" → must enumerate which errors and the expected behaviour for each
+- "Reuse the existing utility" → must cite `file:line`
+- "Follow established patterns" → must name the pattern and cite where it lives in the repo
+- "Test the feature" → must name the test targets or commands
+
 ### Implementation Routing (post-plan approval)
 
 | Project type / language          | Implementation agent |
