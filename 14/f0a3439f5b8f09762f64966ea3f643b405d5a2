@@ -1,0 +1,25 @@
+hooks/scripts/clean_code_validator.py
+  s_b4b56f64ac0020::t_16ba359872c3d7 1-286
+hooks/local/post-clean-code-validator.md
+  s_b4b56f64ac0020::t_f0cbd84b71edbb 1-65
+hooks/scripts/clean_code_reminder.py
+  s_b4b56f64ac0020::t_47ec18e88e71b8 1-27
+hooks/local/pre-clean-code-reminder.md
+  s_b4b56f64ac0020::t_cd2263ce244cac 1-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "14f0a3439f5b8f09762f64966ea3f643b405d5a2",
+  "prompts": {},
+  "sessions": {
+    "s_b4b56f64ac0020": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2d4f3def-224b-4e69-acaa-c531144cb093",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Victor <roliveira.victor@gmail.com>"
+    }
+  }
+}
